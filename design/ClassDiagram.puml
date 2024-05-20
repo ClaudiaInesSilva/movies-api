@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Movie {
+  + Movie(ObjectId, String, String, String, String, String, List<String>, List<String>, List<Review>):
+  + Movie():
+  - reviewIds: List<Review>
+  - trailerLink: String
+  - id: ObjectId
+  - releaseDate: String
+  - imdbId: String
+  - genres: List<String>
+  - poster: String
+  - title: String
+  - backdrops: List<String>
+}
+class MovieController {
+  + MovieController():
+  - movieService: MovieService
+}
+interface MovieRepository << interface >>
+class MovieService {
+  + MovieService():
+  - movieRepository: MovieRepository
+}
+
+class Review {
+  + Review(ObjectId, String):
+  + Review():
+  + Review(String):
+  - body: String
+  - id: ObjectId
+}
+class ReviewController {
+  + ReviewController():
+  - reviewService: ReviewService
+}
+interface ReviewRepository << interface >>
+class ReviewService {
+  + ReviewService():
+  - mongoTemplate: MongoTemplate
+  - reviewRepository: ReviewRepository
+}
+
+Movie             "1" *-[#595959,plain]-> "reviewIds\n*" Review
+MovieController   "1" *-[#595959,plain]-> "movieService\n1" MovieService
+MovieService      "1" *-[#595959,plain]-> "movieRepository\n1" MovieRepository
+ReviewController  "1" *-[#595959,plain]-> "reviewService\n1" ReviewService
+ReviewService      -[#595959,dashed]->  Review            : "«create»"
+ReviewService     "1" *-[#595959,plain]-> "reviewRepository\n1" ReviewRepository
+@enduml

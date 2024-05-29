@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
-@Document(collection= "movies") //Spring data MongoDB annotation - This annotation marks a class
+@Document(collection = "movies") //Spring data MongoDB annotation - This annotation marks a class
 // as being a domain object that we want to persist to the database:
 @Data //"shortcut" for getters, setters, toString, equals, hashcode...
 @AllArgsConstructor // generates a constructor with one parameter for every field in the class

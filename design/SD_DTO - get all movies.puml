@@ -1,0 +1,26 @@
+@startuml
+
+title Sequence Diagram: List of all Movies
+
+autonumber
+actor User as user
+activate user
+user -> ":MovieController": GET /all movies
+activate ":MovieController"
+":MovieController" -> ":MovieService": allMovies() : ":MovieService"
+activate ":MovieService"
+":MovieService" -> ":MovieRepository": findAll() : MongoRepository
+activate ":MovieRepository"
+":MovieRepository" --> ":MovieService": List<Movie>
+deactivate ":MovieRepository"
+":MovieService" -> ":DTOMapper": toMovieDTOList(List<Movie>) : List<MovieDTO>
+activate ":DTOMapper"
+":DTOMapper" --> ":MovieService": List<MovieDTO>
+deactivate ":DTOMapper"
+":MovieService" --> ":MovieController": List<MovieDTO>
+deactivate ":MovieService"
+":MovieController" --> user: ResponseEntity<List<MovieDTO>>(HttpStatus.OK)
+deactivate ":MovieController"
+deactivate user
+@enduml
+
